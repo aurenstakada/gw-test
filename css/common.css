@@ -1,0 +1,107 @@
+/* ============================================================
+   共通スタイル
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --color-primary:   #1a73e8;
+  --color-primary-d: #0d47a1;
+  --color-bg:        #f0f4f8;
+  --color-surface:   #ffffff;
+  --color-border:    #ccd8e8;
+  --color-text:      #1a3a5c;
+  --color-muted:     #718096;
+  --color-danger:    #e53e3e;
+  --radius:          10px;
+  --shadow:          0 4px 16px rgba(0,0,0,0.10);
+  --header-h:        56px;
+}
+
+body {
+  font-family: "Meiryo", "メイリオ", "Hiragino Kaku Gothic Pro", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* ---- ヘッダー ---- */
+.gw-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-d));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.gw-header .logo { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+
+.gw-header .user-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.gw-header .avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.gw-header .btn-logout {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+.gw-header .btn-logout:hover { background: rgba(255,255,255,0.35); }
+
+/* ---- メインコンテンツ ---- */
+.gw-main {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--color-text);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-title::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 24px;
+  background: var(--color-primary);
+  border-radius: 3px;
+}
+
+/* ---- フッター ---- */
+.gw-footer {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 12px;
+  padding: 24px 0 16px;
+}

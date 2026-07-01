@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ログイン - GroupWare</title>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  body { display: flex; flex-direction: column; min-height: 100vh; background: linear-gradient(135deg, #e8f0fe, #f0f4f8); }
+
+  .login-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .login-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .login-logo {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+
+  .login-sub {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 13px;
+    margin-bottom: 36px;
+  }
+
+  .form-group { margin-bottom: 18px; }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 6px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(26,115,232,0.15); }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--color-primary-d); }
+  .btn-primary:disabled { background: #90b4e8; cursor: not-allowed; }
+
+  .error-msg {
+    color: var(--color-danger);
+    font-size: 13px;
+    margin-top: 12px;
+    text-align: center;
+    min-height: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">🏢 GroupWare</div>
+    <div class="login-sub">社内グループウェアシステム</div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" placeholder="example@company.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード</label>
+        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn-primary" id="btn-login">ログイン</button>
+      <div class="error-msg" id="error-msg"></div>
+    </form>
+  </div>
+</div>
+
+<footer class="gw-footer">&copy; 2026 GroupWare System. All rights reserved.</footer>
+
+<script type="module">
+  import { supabase } from "./js/supabase-client.js";
+
+  // すでにログイン済みならトップへ
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) location.href = "/index.html";
+
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById("btn-login");
+    const errEl = document.getElementById("error-msg");
+    btn.disabled = true;
+    btn.textContent = "ログイン中...";
+    errEl.textContent = "";
+
+    const email    = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      errEl.textContent = "メールアドレスまたはパスワードが正しくありません。";
+      btn.disabled = false;
+      btn.textContent = "ログイン";
+    } else {
+      location.href = "/index.html";
+    }
+  });
+</script>
+</body>
+</html>
