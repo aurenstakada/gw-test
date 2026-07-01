@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ユーザー登録 - GroupWare</title>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  body { display: flex; flex-direction: column; min-height: 100vh; background: linear-gradient(135deg, #e8f0fe, #f0f4f8); }
+
+  .register-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .register-card {
+    background: #fff;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .register-logo {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 6px;
+  }
+
+  .register-sub {
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 6px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--color-primary-d); }
+  .btn-primary:disabled { background: #90b4e8; cursor: not-allowed; }
+
+  .msg {
+    font-size: 13px;
+    margin-top: 12px;
+    text-align: center;
+    min-height: 20px;
+  }
+  .msg.error   { color: var(--color-danger); }
+  .msg.success { color: #276749; }
+
+  .login-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  .login-link a { color: var(--color-primary); text-decoration: none; }
+  .login-link a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="register-wrap">
+  <div class="register-card">
+    <div class="register-logo">🏢 GroupWare</div>
+    <div class="register-sub">新規ユーザー登録</div>
+
+    <form id="register-form">
+      <div class="form-group">
+        <label for="fullname">氏名</label>
+        <input type="text" id="fullname" placeholder="山田 太郎" required>
+      </div>
+      <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" placeholder="example@company.com" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード（8文字以上）</label>
+        <input type="password" id="password" placeholder="••••••••" required minlength="8" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="password2">パスワード（確認）</label>
+        <input type="password" id="password2" placeholder="••••••••" required minlength="8" autocomplete="new-password">
+      </div>
+      <button type="submit" class="btn-primary" id="btn-register">登録する</button>
+      <div class="msg" id="msg"></div>
+    </form>
+
+    <div class="login-link">
+      すでにアカウントをお持ちの方は <a href="/login.html">ログイン</a>
+    </div>
+  </div>
+</div>
+
+<footer class="gw-footer">&copy; 2026 GroupWare System. All rights reserved.</footer>
+
+<script type="module">
+  import { supabase } from "./js/supabase-client.js";
+
+  // すでにログイン済みならダッシュボードへ
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) location.href = "/dashboard.html";
+
+  document.getElementById("register-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn   = document.getElementById("btn-register");
+    const msgEl = document.getElementById("msg");
+
+    const fullname  = document.getElementById("fullname").value.trim();
+    const email     = document.getElementById("email").value.trim();
+    const password  = document.getElementById("password").value;
+    const password2 = document.getElementById("password2").value;
+
+    if (password !== password2) {
+      msgEl.textContent = "パスワードが一致しません。";
+      msgEl.className = "msg error";
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "登録中...";
+    msgEl.textContent = "";
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullname }
+      }
+    });
+
+    if (error) {
+      msgEl.textContent = error.message.includes("already registered")
+        ? "このメールアドレスはすでに登録されています。"
+        : "登録に失敗しました: " + error.message;
+      msgEl.className = "msg error";
+      btn.disabled = false;
+      btn.textContent = "登録する";
+    } else {
+      msgEl.textContent = "✅ 登録完了！確認メールを送信しました。メールのリンクをクリックしてください。";
+      msgEl.className = "msg success";
+      btn.disabled = true;
+    }
+  });
+</script>
+</body>
+</html>
