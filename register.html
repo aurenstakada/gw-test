@@ -178,9 +178,10 @@
       btn.disabled = false;
       btn.textContent = "登録する";
     } else {
-      msgEl.textContent = "✅ 登録完了！確認メールを送信しました。メールのリンクをクリックしてください。";
+      msgEl.textContent = "✅ 登録完了！ログイン画面へ移動します...";
       msgEl.className = "msg success";
       btn.disabled = true;
+      setTimeout(() => { location.href = "/login.html"; }, 1500);
     }
   });
 </script>
