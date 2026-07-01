@@ -116,7 +116,7 @@
 
   // すでにログイン済みならトップへ
   const { data: { session } } = await supabase.auth.getSession();
-  if (session) location.href = "/index.html";
+  if (session) location.href = "/dashboard.html";
 
   document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -135,7 +135,7 @@
       btn.disabled = false;
       btn.textContent = "ログイン";
     } else {
-      location.href = "/index.html";
+      location.href = "/dashboard.html";
     }
   });
 </script>

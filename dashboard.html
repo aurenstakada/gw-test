@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>トップ - GroupWare</title>
+<link rel="stylesheet" href="css/common.css">
+<style>
+  /* ---- 機能グリッド ---- */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    background: var(--color-border);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .feature-item {
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 12px 22px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    text-decoration: none;
+    color: inherit;
+    gap: 14px;
+    min-height: 130px;
+    position: relative;
+  }
+  .feature-item:hover {
+    background: #e8f0fe;
+    transform: scale(1.03);
+    z-index: 1;
+  }
+
+  .feature-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  }
+
+  .feature-name {
+    font-size: 13px;
+    font-weight: bold;
+    color: #2c5282;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .badge {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: var(--color-danger);
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 1px 7px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  /* アイコン色 */
+  .icon-blue   { background: linear-gradient(135deg,#4da6ff,#1a73e8); }
+  .icon-sky    { background: linear-gradient(135deg,#90cdf4,#2b6cb0); }
+  .icon-green  { background: linear-gradient(135deg,#68d391,#276749); }
+  .icon-orange { background: linear-gradient(135deg,#fbd38d,#c05621); }
+  .icon-red    { background: linear-gradient(135deg,#fc8181,#9b2335); }
+  .icon-teal   { background: linear-gradient(135deg,#81e6d9,#285e61); }
+  .icon-yellow { background: linear-gradient(135deg,#faf089,#975a16); }
+  .icon-indigo { background: linear-gradient(135deg,#a3bffa,#434190); }
+  .icon-pink   { background: linear-gradient(135deg,#fbb6ce,#97266d); }
+  .icon-purple { background: linear-gradient(135deg,#d6bcfa,#553c9a); }
+  .icon-lime   { background: linear-gradient(135deg,#c6f6d5,#276749); }
+  .icon-rose   { background: linear-gradient(135deg,#fed7d7,#9b2335); }
+  .icon-amber  { background: linear-gradient(135deg,#feebc8,#975a16); }
+  .icon-violet { background: linear-gradient(135deg,#e9d8fd,#553c9a); }
+  .icon-gray   { background: linear-gradient(135deg,#e2e8f0,#4a5568); }
+
+  @media (max-width: 700px) { .feature-grid { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width: 460px) { .feature-grid { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+
+<header class="gw-header">
+  <div class="logo">🏢 GroupWare</div>
+  <div class="user-area">
+    <span id="user-name">読み込み中...</span>
+    <div class="avatar" id="user-avatar">?</div>
+    <button class="btn-logout" id="btn-logout">ログアウト</button>
+  </div>
+</header>
+
+<main class="gw-main">
+  <div class="page-title">機能メニュー</div>
+
+  <div class="feature-grid">
+    <a class="feature-item" href="/pages/top.html">
+      <div class="feature-icon icon-blue">🏠</div>
+      <div class="feature-name">トップページ</div>
+    </a>
+    <a class="feature-item" href="/pages/schedule.html">
+      <div class="badge" id="badge-schedule" style="display:none"></div>
+      <div class="feature-icon icon-sky">📅</div>
+      <div class="feature-name">スケジュール</div>
+    </a>
+    <a class="feature-item" href="/pages/board.html">
+      <div class="badge" id="badge-board" style="display:none"></div>
+      <div class="feature-icon icon-green">📋</div>
+      <div class="feature-name">掲示板</div>
+    </a>
+    <a class="feature-item" href="/pages/message.html">
+      <div class="badge" id="badge-message" style="display:none"></div>
+      <div class="feature-icon icon-orange">💬</div>
+      <div class="feature-name">メッセージ</div>
+    </a>
+    <a class="feature-item" href="/pages/workflow.html">
+      <div class="badge" id="badge-workflow" style="display:none"></div>
+      <div class="feature-icon icon-red">✅</div>
+      <div class="feature-name">ワークフロー</div>
+    </a>
+    <a class="feature-item" href="/pages/files.html">
+      <div class="feature-icon icon-teal">📁</div>
+      <div class="feature-name">ファイル管理</div>
+    </a>
+    <a class="feature-item" href="/pages/mail.html">
+      <div class="badge" id="badge-mail" style="display:none"></div>
+      <div class="feature-icon icon-yellow">✉️</div>
+      <div class="feature-name">メール</div>
+    </a>
+    <a class="feature-item" href="/pages/report.html">
+      <div class="feature-icon icon-indigo">📝</div>
+      <div class="feature-name">報告書</div>
+    </a>
+    <a class="feature-item" href="/pages/address.html">
+      <div class="feature-icon icon-pink">📒</div>
+      <div class="feature-name">アドレス帳</div>
+    </a>
+    <a class="feature-item" href="/pages/phonememo.html">
+      <div class="badge" id="badge-phone" style="display:none"></div>
+      <div class="feature-icon icon-purple">📞</div>
+      <div class="feature-name">電話メモ</div>
+    </a>
+    <a class="feature-item" href="/pages/project.html">
+      <div class="feature-icon icon-lime">👥</div>
+      <div class="feature-name">プロジェクト</div>
+    </a>
+    <a class="feature-item" href="/pages/todo.html">
+      <div class="feature-icon icon-rose">☑️</div>
+      <div class="feature-name">ToDoリスト</div>
+    </a>
+    <a class="feature-item" href="/pages/timecard.html">
+      <div class="feature-icon icon-amber">🕐</div>
+      <div class="feature-name">タイムカード</div>
+    </a>
+    <a class="feature-item" href="/pages/customapp.html">
+      <div class="feature-icon icon-violet">🧩</div>
+      <div class="feature-name">カスタムアプリ</div>
+    </a>
+    <a class="feature-item" href="#">
+      <div class="feature-icon icon-gray">📱</div>
+      <div class="feature-name">スマホ・タブレット<br>でも使える</div>
+    </a>
+  </div>
+</main>
+
+<footer class="gw-footer">&copy; 2026 GroupWare System. All rights reserved.</footer>
+
+<script type="module">
+  import { supabase } from "./js/supabase-client.js";
+  import { requireAuth, renderUserInfo, signOut } from "./js/auth.js";
+
+  const session = await requireAuth();
+  if (!session) return;
+
+  renderUserInfo(session);
+
+  // アバター頭文字
+  const meta = session.user.user_metadata;
+  const name = meta?.full_name || session.user.email || "";
+  document.getElementById("user-avatar").textContent = name.charAt(0).toUpperCase();
+
+  // ログアウト
+  document.getElementById("btn-logout").addEventListener("click", signOut);
+
+  // 未読バッジを取得（未読数テーブルから）
+  async function loadBadges() {
+    const userId = session.user.id;
+    const { data } = await supabase
+      .from("unread_counts")
+      .select("feature, count")
+      .eq("user_id", userId);
+
+    if (!data) return;
+    const map = { message: "badge-message", board: "badge-board",
+                  workflow: "badge-workflow", mail: "badge-mail",
+                  phone: "badge-phone", schedule: "badge-schedule" };
+    data.forEach(({ feature, count }) => {
+      const id = map[feature];
+      if (id && count > 0) {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = count > 99 ? "99+" : count; el.style.display = ""; }
+      }
+    });
+  }
+  loadBadges();
+</script>
+</body>
+</html>
